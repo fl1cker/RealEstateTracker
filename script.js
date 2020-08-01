@@ -43,7 +43,6 @@ function addMarker(lat, lng, label = null) {
     marker.setMap(null);
     markers = markers.filter((x) => x.label !== marker.label);
   });
-  console.log(marker);
 }
 
 function saveMapData() {
@@ -57,7 +56,23 @@ function saveMapData() {
   localStorage.setItem('markers', JSON.stringify(storableMarkers));
 }
 
+async function getCoordinatedFromAddress(addressString) {
+  const encodedAddress = encodeURI(addressString);
+  const result = fetch(
+    `https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}&key=${GOOGLE_MAPS_KEY}`
+  )
+    .then((result) => result.json())
+    .then((data) => {
+      if (data.results.length === 0) {
+        return;
+      }
+      const { lat, lng } = data.results[0].geometry.location;
+      addMarker(lat, lng);
+    });
+}
+
 // Event Listeners
 window.addEventListener('unload', saveMapData);
 
 initApp();
+getCoordinatedFromAddress('Brooklyn, Jacksonville, FL');
