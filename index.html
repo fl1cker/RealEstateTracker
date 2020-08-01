@@ -3,13 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+      crossorigin="anonymous"
+    />
     <link rel="stylesheet" href="style.css" />
-
     <title>Real Estate Tracker</title>
   </head>
   <body>
     <div class="map-container">
       <div id="map" class="map"></div>
+      <div class="search-container">
+        <form class="search-form" id="address-search-submit">
+          <input id="address-search-input" placeholder="... Enter Address" />
+          <button type="submit" id="address-search-btn">
+            <i class="fa fa-search"></i>
+          </button>
+        </form>
+      </div>
     </div>
 
     <aside class="detail-container"></aside>

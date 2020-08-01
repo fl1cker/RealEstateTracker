@@ -1,3 +1,6 @@
+const searchSubmit = document.getElementById('address-search-submit');
+const searchAddressInput = document.getElementById('address-search-input');
+
 let map;
 let markers = [];
 let labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefhijklmnopqrstuvwxyz1234567890';
@@ -56,7 +59,15 @@ function saveMapData() {
   localStorage.setItem('markers', JSON.stringify(storableMarkers));
 }
 
-async function getCoordinatedFromAddress(addressString) {
+async function plotPinByAddress(e) {
+  e.preventDefault();
+  const address = searchAddressInput.value.trim();
+  if (address) {
+    await getCoordinatesFromAddress(address);
+  }
+}
+
+async function getCoordinatesFromAddress(addressString) {
   const encodedAddress = encodeURI(addressString);
   const result = fetch(
     `https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}&key=${GOOGLE_MAPS_KEY}`
@@ -73,6 +84,6 @@ async function getCoordinatedFromAddress(addressString) {
 
 // Event Listeners
 window.addEventListener('unload', saveMapData);
+searchSubmit.addEventListener('submit', plotPinByAddress);
 
 initApp();
-getCoordinatedFromAddress('Brooklyn, Jacksonville, FL');

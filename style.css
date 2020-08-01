@@ -11,11 +11,13 @@ body {
   margin: 0;
   padding: 0;
   display: flex;
+  font-family: Roboto, Arial, sans-serif;
 }
 
 .map-container {
   height: 100%;
   width: 100%;
+  position: relative;
 }
 
 .map {
@@ -32,4 +34,47 @@ body {
 
 .detail-container.open {
   width: 20%;
+}
+
+.search-container {
+  position: absolute;
+  top: 10px;
+  left: 300px;
+  height: 40px;
+  width: 400px;
+  background-color: #fff;
+  border-radius: 2px;
+}
+
+.search-form {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+}
+
+.search-form > * {
+  height: 100%;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.search-form button {
+  flex-basis: 8%;
+  cursor: pointer;
+}
+
+.search-form i {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  background-color: #fff;
+}
+
+.search-form input {
+  flex-basis: 92%;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  padding-left: 8px;
 }
