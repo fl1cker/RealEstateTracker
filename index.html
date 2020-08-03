@@ -13,19 +13,37 @@
     <title>Real Estate Tracker</title>
   </head>
   <body>
+    <aside class="detail-container"></aside>
+    <aside class="add-marker-details-container open">
+      <h1>Home Details</h1>
+      <form id="add-marker-details-form">
+        <div class="form-control">
+          <input type="text" id="add-marker-details-address" />
+        </div>
+        <div class="form-control">
+          <input type="text" id="add-marker-details-price" />
+        </div>
+        <div class="form-control">
+          <textarea
+            id="add-marker-details-notes"
+            cols="30"
+            rows="10"
+          ></textarea>
+        </div>
+        <button type="submit"></button>
+      </form>
+    </aside>
     <div class="map-container">
       <div id="map" class="map"></div>
       <div class="search-container">
         <form class="search-form" id="address-search-submit">
-          <input id="address-search-input" placeholder="... Enter Address" />
+          <input id="address-search-input" placeholder="Search by Address" />
           <button type="submit" id="address-search-btn">
             <i class="fa fa-search"></i>
           </button>
         </form>
       </div>
     </div>
-
-    <aside class="detail-container"></aside>
     <script src="googleMapsApiCredentials.js"></script>
     <script src="script.js"></script>
   </body>
