@@ -1,6 +1,7 @@
 /* Always set the map height explicitly to define the size of the div element that contains the map. */
 :root {
   --width-transition: width 0.3s ease-in-out;
+  --grey-background: #ececec;
 }
 
 * {
@@ -32,27 +33,110 @@ body {
 }
 
 .detail-container,
-.add-marker-details-container {
+.marker-details-container {
   width: 0;
   height: 100%;
-  background-color: #edffd7;
+  background-color: var(--grey-background);
   transition: var(--width-transition);
 }
 
 .detail-container.open,
-.add-marker-details-container.open {
-  width: 20%;
+.marker-details-container.open {
+  width: 30%;
 }
 
-.add-marker-details-form {
-  height: 100%;
+.marker-details-form {
   width: 100%;
+  padding: 10px;
+  background-color: #edffd7;
 }
 
-.add-marker-details-form h1 {
+.marker-details-form h1 {
   padding: 0;
   margin: 0;
   font-size: 20px;
+  text-align: center;
+}
+
+.form-control {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.form-control input,
+.form-control .link-container input {
+  width: 100%;
+}
+
+.form-control label {
+  display: block;
+  width: 100%;
+}
+
+.form-control.inline {
+  display: inline-flex;
+  justify-content: space-between;
+}
+
+.form-control.inline label {
+  text-align: center;
+}
+
+.form-control:first-of-type {
+  margin-top: 10px;
+}
+
+.form-control .notes-textarea {
+  width: 100%;
+  align-self: flex-start;
+}
+
+.marker-details-form > .button-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.marker-details-form > .button-container > button {
+  height: 35px;
+  width: 90px;
+  background-color: #fff;
+  border: 0;
+  border-radius: 3px;
+}
+
+.link-container {
+  position: relative;
+}
+
+.link-container input {
+  padding-right: 23px;
+}
+
+.link-container i {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: lightgrey;
+  padding: 2px;
+  border: 1px solid #000;
+  font-size: 15px;
+  border-radius: 2px;
+}
+
+.horizontal-border-divider {
+  height: 15px;
+  width: 100%;
+  position: relative;
+  background: linear-gradient(
+    to bottom,
+    silver,
+    var(--grey-background),
+    white,
+    var(--grey-background),
+    silver
+  );
 }
 
 .search-container {
@@ -67,7 +151,7 @@ body {
   transition: var(--width-transition);
 }
 
-.add-marker-details-container.open ~ .map-container > .search-container {
+.marker-details-container.open ~ .map-container > .search-container {
   width: 200px;
 }
 
@@ -102,4 +186,12 @@ body {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   padding-left: 8px;
+}
+
+.align-right {
+  text-align: end;
+}
+
+.hidden {
+  display: none;
 }

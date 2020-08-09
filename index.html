@@ -13,25 +13,59 @@
     <title>Real Estate Tracker</title>
   </head>
   <body>
-    <aside class="detail-container"></aside>
-    <aside class="add-marker-details-container open">
-      <h1>Home Details</h1>
-      <form id="add-marker-details-form">
-        <div class="form-control">
-          <input type="text" id="add-marker-details-address" />
+    <aside id="marker-details-container" class="marker-details-container">
+      <form id="marker-details-form" class="marker-details-form">
+        <h1>Home Details</h1>
+        <div class="hidden">
+          <input type="text" id="marker-details-label" />
         </div>
         <div class="form-control">
-          <input type="text" id="add-marker-details-price" />
+          <label for="marker-details-address">Addr:</label>
+          <input type="text" id="marker-details-address" />
         </div>
         <div class="form-control">
-          <textarea
-            id="add-marker-details-notes"
-            cols="30"
-            rows="10"
-          ></textarea>
+          <label for="marker-details-price">Price:</label>
+          <input type="text" id="marker-details-price" />
         </div>
-        <button type="submit"></button>
+        <div class="form-control">
+          <label for="marker-details-beds">Beds:</label>
+          <input type="text" id="marker-details-beds" />
+        </div>
+        <div class="form-control">
+          <label for="marker-details-baths">Baths:</label>
+          <input type="text" id="marker-details-baths" />
+        </div>
+        <div class="form-control inline">
+          <label for="marker-details-office">Office</label>
+          <input type="checkbox" id="marker-details-office" />
+        </div>
+        <div class="form-control inline">
+          <label for="marker-details-workshop">Workshop</label>
+          <input type="checkbox" id="marker-details-workshop" />
+        </div>
+        <div class="form-control inline">
+          <label for="marker-details-pool">Pool</label>
+          <input type="checkbox" id="marker-details-pool" />
+        </div>
+        <div class="form-control">
+          <label for="marker-details-baths">Link:</label>
+          <div class="link-container">
+            <input type="text" id="marker-details-link" />
+            <i class="fa fa-copy" id="marker-details-link-copy"></i>
+          </div>
+        </div>
+        <div class="form-control">
+          <label class="notes-textarea" for="marker-details-notes"
+            >Notes:</label
+          >
+          <textarea id="marker-details-notes" cols="30" rows="15"></textarea>
+        </div>
+        <div class="button-container">
+          <button type="button" id="marker-details-cancel-btn">Cancel</button>
+          <button type="submit">Submit</button>
+        </div>
       </form>
+      <div class="horizontal-border-divider"></div>
     </aside>
     <div class="map-container">
       <div id="map" class="map"></div>

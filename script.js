@@ -3,12 +3,21 @@
 2) Add the JS to read the form on submit and store it
 3) Consider additional fields to add to the UI (perhaps a key-value pair to add anything i want on the fly)
 
-
 */
 
 const searchSubmit = document.getElementById('address-search-submit');
 const searchAddressInput = document.getElementById('address-search-input');
-const addMarkDetailsForm = document.getElementById('add-marker-details-form');
+const markerDetailsContainer = document.getElementById(
+  'marker-details-container'
+);
+const markerDetailsForm = document.getElementById('marker-details-form');
+const markerDetailsCancelBtn = document.getElementById(
+  'marker-details-cancel-btn'
+);
+const markerDetailsLink = document.getElementById('marker-details-link');
+const markerDetailsLinkCopy = document.getElementById(
+  'marker-details-link-copy'
+);
 
 let map;
 let markers = [];
@@ -58,14 +67,8 @@ function addMarker(lat, lng, label = null) {
   });
 
   removeUsableLabel(marker.label);
+  addMarkerEventListeners(marker);
   markers.push(marker);
-
-  google.maps.event.addListener(marker, 'rightclick', (e) => {
-    const label = marker.label;
-    marker.setMap(null);
-    markers = markers.filter((x) => x.label !== label);
-    deleteMarkerDetails(label);
-  });
 }
 
 async function plotMarkerByAddress(e) {
@@ -120,7 +123,104 @@ function getNextUsableLabel() {
   return nextLabel;
 }
 
-function addMarkerDetails() {}
+function addMarkerEventListeners(marker) {
+  console.log('this marker = ', marker);
+  google.maps.event.addListener(marker, 'click', (e) => {
+    // if closed, open
+    // if open and same label, close
+    // if open and new label, clear form and repopulate
+    if (!markerDetailsContainer.classList.contains('open')) {
+      populateMarkerDetailsForm(marker.label);
+      openMarkerDetails();
+    } else {
+      if (
+        marker.label !== document.getElementById('marker-details-label').value
+      ) {
+        clearMarkerDetailsForm();
+        populateMarkerDetailsForm(marker.label);
+      }
+    }
+  });
+
+  google.maps.event.addListener(marker, 'rightclick', (e) => {
+    const label = marker.label;
+    marker.setMap(null);
+    markers = markers.filter((x) => x.label !== label);
+    deleteMarkerDetails(label);
+  });
+}
+
+function populateMarkerDetailsForm(label) {
+  const markerDetail = markerDetails.find((x) => x.label === label);
+
+  if (markerDetail) {
+    document.getElementById('marker-details-address').value =
+      markerDetail.address;
+    document.getElementById('marker-details-price').value = markerDetail.price;
+    document.getElementById('marker-details-beds').value = markerDetail.beds;
+    document.getElementById('marker-details-baths').value = markerDetail.baths;
+    document.getElementById('marker-details-office').checked =
+      markerDetail.hasOffice;
+    document.getElementById('marker-details-workshop').checked =
+      markerDetail.hasWorkshop;
+    document.getElementById('marker-details-pool').checked =
+      markerDetail.hasPool;
+    document.getElementById('marker-details-link').value = markerDetail.link;
+    document.getElementById('marker-details-notes').value = markerDetail.notes;
+  }
+
+  document.getElementById('marker-details-label').value = label;
+}
+
+function openMarkerDetails() {
+  markerDetailsContainer.classList.add('open');
+}
+
+function updateMarkerDetails(e) {
+  e.preventDefault();
+
+  const markerDetail = {
+    label: document.getElementById('marker-details-label').value,
+    address: document.getElementById('marker-details-address').value,
+    price: document.getElementById('marker-details-price').value,
+    beds: document.getElementById('marker-details-beds').value,
+    baths: document.getElementById('marker-details-baths').value,
+    hasOffice: document.getElementById('marker-details-office').checked,
+    hasWorkshop: document.getElementById('marker-details-workshop').checked,
+    hasPool: document.getElementById('marker-details-pool').checked,
+    link: document.getElementById('marker-details-link').value,
+    notes: document.getElementById('marker-details-notes').value,
+  };
+
+  const index = markerDetails.findIndex((x) => x.label === markerDetail.label);
+  if (index > -1) {
+    markerDetails[index] = markerDetail;
+  } else {
+    markerDetails.push(markerDetail);
+  }
+
+  clearMarkerDetailsForm();
+
+  markerDetailsContainer.classList.remove('open');
+}
+
+function cancelMarkerDetailsUpdate() {
+  clearMarkerDetailsForm();
+  markerDetailsContainer.classList.remove('open');
+}
+
+function clearMarkerDetailsForm() {
+  document.getElementById('marker-details-label').value = '';
+  document.getElementById('marker-details-address').value = '';
+  document.getElementById('marker-details-price').value = '';
+  document.getElementById('marker-details-beds').value = '';
+  document.getElementById('marker-details-baths').value = '';
+  document.getElementById('marker-details-office').checked = '';
+  document.getElementById('marker-details-workshop').checked = '';
+  document.getElementById('marker-details-pool').checked = '';
+  document.getElementById('marker-details-link').value = '';
+  document.getElementById('marker-details-notes').value = '';
+}
 
 function deleteMarkerDetails(label) {
   markerDetails = markerDetails.filter((item) => item.label !== label);
@@ -128,6 +228,13 @@ function deleteMarkerDetails(label) {
 
 function getMarkerDetails(label) {
   return markerDetails.find((x) => x.label === label);
+}
+
+function copyMarkerDetailsLinks() {
+  markerDetailsLink.select();
+  markerDetailsLink.setSelectionRange(0, 99999);
+  document.execCommand('copy');
+  markerDetailsLink.setSelectionRange(0, 0);
 }
 
 function saveMapData() {
@@ -142,9 +249,17 @@ function saveMapData() {
   localStorage.setItem('markerDetails', JSON.stringify(markerDetails));
 }
 
+function resetAllSavedData() {
+  markers = [];
+  markerDetails = [];
+  localStorage.clear();
+}
+
 // Event Listeners
 window.addEventListener('unload', saveMapData);
 searchSubmit.addEventListener('submit', plotMarkerByAddress);
-addPinForm.addEventListener('submit', addMarkerDetails);
+markerDetailsForm.addEventListener('submit', updateMarkerDetails);
+markerDetailsCancelBtn.addEventListener('click', cancelMarkerDetailsUpdate);
+markerDetailsLinkCopy.addEventListener('click', copyMarkerDetailsLinks);
 
 initApp();
