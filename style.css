@@ -65,6 +65,10 @@ body {
   margin-bottom: 10px;
 }
 
+.form-control .link-container {
+  width: 100%;
+}
+
 .form-control input,
 .form-control .link-container input {
   width: 100%;
@@ -119,9 +123,9 @@ body {
   top: 0;
   right: 0;
   background-color: lightgrey;
-  padding: 2px;
+  padding: 4px;
   border: 1px solid #000;
-  font-size: 15px;
+  font-size: 11px;
   border-radius: 2px;
 }
 

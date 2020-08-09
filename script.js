@@ -1,8 +1,6 @@
 /* Next steps
-1) Build the UI for add marker details
-2) Add the JS to read the form on submit and store it
-3) Consider additional fields to add to the UI (perhaps a key-value pair to add anything i want on the fly)
-
+1) on pin delete, clear and close form if same pin as deleted
+2) replace copy function with open in new tab
 */
 
 const searchSubmit = document.getElementById('address-search-submit');
@@ -15,8 +13,8 @@ const markerDetailsCancelBtn = document.getElementById(
   'marker-details-cancel-btn'
 );
 const markerDetailsLink = document.getElementById('marker-details-link');
-const markerDetailsLinkCopy = document.getElementById(
-  'marker-details-link-copy'
+const markerDetailsLinkOpen = document.getElementById(
+  'marker-details-link-open'
 );
 
 let map;
@@ -124,14 +122,13 @@ function getNextUsableLabel() {
 }
 
 function addMarkerEventListeners(marker) {
-  console.log('this marker = ', marker);
   google.maps.event.addListener(marker, 'click', (e) => {
     // if closed, open
     // if open and same label, close
     // if open and new label, clear form and repopulate
     if (!markerDetailsContainer.classList.contains('open')) {
       populateMarkerDetailsForm(marker.label);
-      openMarkerDetails();
+      openMarkerDetailsForm();
     } else {
       if (
         marker.label !== document.getElementById('marker-details-label').value
@@ -147,6 +144,7 @@ function addMarkerEventListeners(marker) {
     marker.setMap(null);
     markers = markers.filter((x) => x.label !== label);
     deleteMarkerDetails(label);
+    cancelMarkerDetailsUpdate();
   });
 }
 
@@ -172,7 +170,7 @@ function populateMarkerDetailsForm(label) {
   document.getElementById('marker-details-label').value = label;
 }
 
-function openMarkerDetails() {
+function openMarkerDetailsForm() {
   markerDetailsContainer.classList.add('open');
 }
 
@@ -230,11 +228,11 @@ function getMarkerDetails(label) {
   return markerDetails.find((x) => x.label === label);
 }
 
-function copyMarkerDetailsLinks() {
-  markerDetailsLink.select();
-  markerDetailsLink.setSelectionRange(0, 99999);
-  document.execCommand('copy');
-  markerDetailsLink.setSelectionRange(0, 0);
+function openMarkerDetailsLink() {
+  const url = markerDetailsLink.value;
+  if (url) {
+    window.open(url, '_blank');
+  }
 }
 
 function saveMapData() {
@@ -260,6 +258,6 @@ window.addEventListener('unload', saveMapData);
 searchSubmit.addEventListener('submit', plotMarkerByAddress);
 markerDetailsForm.addEventListener('submit', updateMarkerDetails);
 markerDetailsCancelBtn.addEventListener('click', cancelMarkerDetailsUpdate);
-markerDetailsLinkCopy.addEventListener('click', copyMarkerDetailsLinks);
+markerDetailsLinkOpen.addEventListener('click', openMarkerDetailsLink);
 
 initApp();
