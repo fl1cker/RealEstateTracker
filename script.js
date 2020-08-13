@@ -1,6 +1,5 @@
 /* Next steps
-1) on pin delete, clear and close form if same pin as deleted
-2) replace copy function with open in new tab
+Draw Maps for Schools/Crimes/etc
 */
 
 const searchSubmit = document.getElementById('address-search-submit');
